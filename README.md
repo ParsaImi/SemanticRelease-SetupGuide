@@ -1,123 +1,109 @@
-*SemanticRelease
+# SemanticRelease
 
-SemanticRelease is a tool that helps you automate versioning and publishing of your npm packages, and generate change logs from the commit messages.
+SemanticRelease is a tool that helps you automate versioning and publishing of your npm packages, and generate changelogs from commit messages.
 
+## Configuration (.releaserc.json)
 
-**Configuration ( releaserc.json ):**
-    ```branches: [ "master" ]```: this will trigger the release only on master branch
+### Branches
 
-
-    
-
-***Plugins:
-    -   "@semantic-release/release-notes-generator": Generate release notes from commit messages.
-
-    - preset: 'conventionalcommits' : using conventional commit specification for parsing commit message
-
-```
-[
-      "@semantic-release/commit-analyzer",
-      {
-        "preset": "angular",
-        "releaseRules": [
-          { "type": "docs", "scope": "README", "release": "patch" },
-          { "type": "refactor", "release": "patch" },
-          { "type": "style", "release": "patch" }
-        ],
-        "parserOpts": {
-          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
-        }
-      }
-    ],
-```
-
-- "@semantic-release/commit-analyzer": This plugin analyzes your git commits to determine what type of release should be created (major, minor, or patch).
-- preset: 'angular' : using angular commit specification for parsing commit message.
-- { "type": "docs", "scope": "README", "release": "patch" }, if commit is docs(README): update README.md, then patch will be released.
-- { "type": "refactor", "release": "patch" }, if commit is refactor: something is wrong, then patch will be released.
-- { "type": "style", "release": "patch" }, if commit is style: fix the code style, then patch will be released.
-
-
-
-
-```
-"parserOpts": {
-          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
-  }
-```
-
-Tells the parser which keywords in commit messages indicate a **breaking change** (major version bump).
-
-
-```
-[
-      "@semantic-release/release-notes-generator",
-      {
-        "preset": "angular",
-        "parserOpts": {
-          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
-        },
-        "writerOpts": {
-          "commitsSort": ["subject", "scope"]
-        }
-      }
-    ]
-```
-
-"@semantic-release/release-notes-generator"
-
-This plugin generates the release notes (changelog content) that appear in:
-
-GitHub releases
-CHANGELOG.md file
-The release commit message
-
-```
-"preset": "angular",
-```
-
-Uses the Angular convention to format the release notes. This determines:
-
-How commits are grouped (Features, Bug Fixes, etc.)
-What sections appear in the changelog
-The overall structure and formatting
-
-```
-"parserOpts": {
-  "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
+```json
+{
+  "branches": ["master"]
 }
 ```
 
-Tells the release notes generator which keywords indicate breaking changes.
-When found, these commits get a special section at the top
+This configuration triggers the release only on the master branch.
 
+## Plugins
+
+### @semantic-release/commit-analyzer
+
+This plugin analyzes your git commits to determine what type of release should be created (major, minor, or patch).
+
+```json
+[
+  "@semantic-release/commit-analyzer",
+  {
+    "preset": "angular",
+    "releaseRules": [
+      { "type": "docs", "scope": "README", "release": "patch" },
+      { "type": "refactor", "release": "patch" },
+      { "type": "style", "release": "patch" }
+    ],
+    "parserOpts": {
+      "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
+    }
+  }
+]
 ```
-"writerOpts": {
-          "commitsSort": ["subject", "scope"]
-        }
+
+**Configuration options:**
+
+- **preset**: `'angular'` - Uses Angular commit specification for parsing commit messages
+- **releaseRules**: Custom rules for determining release types
+  - `{ "type": "docs", "scope": "README", "release": "patch" }` - If commit is `docs(README): update README.md`, a patch will be released
+  - `{ "type": "refactor", "release": "patch" }` - If commit is `refactor: something is wrong`, a patch will be released
+  - `{ "type": "style", "release": "patch" }` - If commit is `style: fix the code style`, a patch will be released
+- **parserOpts.noteKeywords**: Tells the parser which keywords in commit messages indicate a breaking change (major version bump)
+
+### @semantic-release/release-notes-generator
+
+This plugin generates the release notes (changelog content) that appear in:
+- GitHub releases
+- CHANGELOG.md file
+- The release commit message
+
+```json
+[
+  "@semantic-release/release-notes-generator",
+  {
+    "preset": "angular",
+    "parserOpts": {
+      "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
+    },
+    "writerOpts": {
+      "commitsSort": ["subject", "scope"]
+    }
+  }
+]
 ```
 
-Controls **how commits are sorted** within each section of the release notes.
+**Configuration options:**
 
-**`["subject", "scope"]`** means:
-1. First, sort alphabetically by **subject** (the commit message text)
-2. If subjects are the same, sort by **scope** (the part in parentheses)
+- **preset**: `'angular'` - Uses the Angular convention to format the release notes. This determines:
+  - How commits are grouped (Features, Bug Fixes, etc.)
+  - What sections appear in the changelog
+  - The overall structure and formatting
+
+- **parserOpts.noteKeywords**: Tells the release notes generator which keywords indicate breaking changes. When found, these commits get a special section at the top
+
+- **writerOpts.commitsSort**: Controls how commits are sorted within each section of the release notes
+  - `["subject", "scope"]` means:
+    1. First, sort alphabetically by subject (the commit message text)
+    2. If subjects are the same, sort by scope (the part in parentheses)
 
 **Example:**
+
 Input commits:
-- feat(auth): add OAuth
-- feat(api): add endpoints  
-- feat(auth): add JWT
-- feat: add logging
+```
+feat(auth): add OAuth
+feat(api): add endpoints  
+feat(auth): add JWT
+feat: add logging
+```
 
 Output in release notes:
+```markdown
 ### Features
 * add logging
 * **api:** add endpoints
 * **auth:** add JWT
 * **auth:** add OAuth
-
 ```
+
+### @semantic-release/changelog
+
+```json
 [
   "@semantic-release/changelog",
   {
@@ -126,11 +112,11 @@ Output in release notes:
 ]
 ```
 
-Automatically updates or creates a changelog file.
+Automatically updates or creates a changelog file. It adds a new changelog entry with the release notes for the new version.
 
-Adds a new changelog entry with the release notes for the new version.
+### @semantic-release/git
 
-```
+```json
 [
   "@semantic-release/git",
   {
@@ -142,86 +128,86 @@ Adds a new changelog entry with the release notes for the new version.
 
 This plugin commits specified files to your Git repository once the release is ready.
 
-***assets***
+**Configuration options:**
 
-This tells the plugin which files to include in the commit.
+- **assets**: Files to include in the commit
+  - `CHANGELOG.md` - Updated changelog generated by @semantic-release/changelog
+  - `package.json` - Version number updated by Semantic Release
+  - `package-lock.json` - Updated to reflect the new package version
 
-CHANGELOG.md: updated changelog generated by @semantic-release/changelog
+- **message**: Git commit message for the release commit
+  - `[skip ci]` - Tells CI systems (like GitHub Actions, GitLab CI, or Travis) not to re-run the CI pipeline for this commit. Since this commit is created automatically by Semantic Release, you usually don't want it to trigger another release cycle
 
-package.json: version number updated by Semantic Release
+### @semantic-release/github
 
-package-lock.json: updated to reflect the new package version
-
-***message***
-
-This defines the Git commit message for the release commit.
-
-"[skip ci]":
-
-Tells CI systems (like GitHub Actions, GitLab CI, or Travis) not to re-run the CI pipeline for this commit.
-
-Since this commit is created automatically by Semantic Release, you usually don’t want it to trigger another release cycle.
-
-
-
-
-```
+```json
 [
-      "@semantic-release/github",
+  "@semantic-release/github",
+  {
+    "assets": [
       {
-        "assets": [
-          {
-            "path": "dist/**"
-          }
-        ]
+        "path": "dist/**"
       }
     ]
+  }
+]
 ```
-
 
 It publishes a release to GitHub after your new version has been determined and changelog generated.
 
-***assets*** : This tells Semantic Release which files or folders to upload to the GitHub release as downloadable assets.
+**Configuration options:**
 
+- **assets**: Files or folders to upload to the GitHub release as downloadable assets
 
-## Github pipeline
+## GitHub Actions Pipeline
 
-```
+### Workflow Name
+
+```yaml
 name: Release
 ```
-name of the pipeline
 
-```
+Defines the name of the pipeline.
+
+### Trigger Configuration
+
+```yaml
 on:
   push:
     branches:
       - main
 ```
 
-on which branch to trigger the pipeline ( the release will be triggered only on main branch )
+Specifies which branch triggers the pipeline. The release will be triggered only on the main branch.
 
-```
+### Permissions
+
+```yaml
 permissions:
   contents: write
 ```
-Write access to repository content, meaning that workflow can commit files to the repository, Push new commits or taga, Create Github release
 
-```
+Grants write access to repository content, allowing the workflow to:
+- Commit files to the repository
+- Push new commits or tags
+- Create GitHub releases
+
+### Install Dependencies
+
+```yaml
 - name: Install dependencies
-        run: npm ci
+  run: npm ci
 ```
 
-Install dependencies. when the runner executes npm ci, it deletes any node_modules folder and installs the dependencies from package-lock.json
+Installs dependencies. When the runner executes `npm ci`, it deletes any existing `node_modules` folder and installs the dependencies from `package-lock.json`.
 
+### Run Semantic Release
 
-
-```
+```yaml
 - name: Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  run: npx semantic-release
 ```
 
-This will run the semantic-release to create a new release.
-
-
+This step runs semantic-release to create a new release.
