@@ -10,5 +10,8 @@
   "license": "ISC",
   "devDependencies": {
     "semantic-release": "^25.0.2"
+  },
+  "dependencies": {
+    "@semantic-release/git": "github:semantic-release/git"
   }
 }
