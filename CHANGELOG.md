@@ -1,3 +1,10 @@
+## [1.1.0](https://github.com/ParsaImi/SemanticRelease-SetupGuide/compare/v1.0.0...v1.1.0) (2025-11-12)
+
+### ✨ Features
+
+* emoji added ([2e8abbe](https://github.com/ParsaImi/SemanticRelease-SetupGuide/commit/2e8abbeeebc04dfc738300cbcd15825f45faa103))
+* emoji fixed ([1565997](https://github.com/ParsaImi/SemanticRelease-SetupGuide/commit/15659975b5300370f98af93da5fde2c2b068887a))
+
 # 1.0.0 (2025-11-12)
 
 
