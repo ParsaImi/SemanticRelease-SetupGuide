@@ -1,3 +1,10 @@
+## [1.2.0](https://github.com/ParsaImi/SemanticRelease-SetupGuide/compare/v1.1.0...v1.2.0) (2025-11-12)
+
+### ✨ Features
+
+* config changed ([793f2fc](https://github.com/ParsaImi/SemanticRelease-SetupGuide/commit/793f2fcae16c264388419050b131fac4414ae9c2))
+* config changed ([cbd5313](https://github.com/ParsaImi/SemanticRelease-SetupGuide/commit/cbd531389d8eeba889994e3f60bd81fdf2d8a15a))
+
 ## [1.1.0](https://github.com/ParsaImi/SemanticRelease-SetupGuide/compare/v1.0.0...v1.1.0) (2025-11-12)
 
 ### ✨ Features
