@@ -1,15 +1,16 @@
 {
-  "branches": ["main"],
+  "branches": [
+    "main"
+  ],
   "plugins": [
     [
       "@semantic-release/commit-analyzer",
       {
-        "preset": "conventionalcommits",
+        "preset": "angular",
         "releaseRules": [
           { "type": "docs", "scope": "README", "release": "patch" },
           { "type": "refactor", "release": "patch" },
-          { "type": "style", "release": "patch" },
-	  { "type": "perf", "release": "patch" }
+          { "type": "style", "release": "patch" }
         ],
         "parserOpts": {
           "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
@@ -20,14 +21,8 @@
       "@semantic-release/release-notes-generator",
       {
         "preset": "conventionalcommits",
-        "parserOpts": {
-          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
-        },
-        "writerOpts": {
-          "commitsSort": ["subject", "scope"]
-        },
-	"presetConfig": {
-	  "types": [
+        "presetConfig": {
+          "types": [
             { "type": "feat", "section": "✨ Features" },
             { "type": "fix", "section": "🐛 Bug Fixes" },
             { "type": "perf", "section": "⚡ Performance Improvements" },
@@ -40,6 +35,12 @@
             { "type": "ci", "section": "👷 Continuous Integration" },
             { "type": "chore", "section": "🔧 Chores" }
           ]
+        },
+        "parserOpts": {
+          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
+        },
+        "writerOpts": {
+          "commitsSort": ["subject", "scope"]
         }
       }
     ],
@@ -49,6 +50,7 @@
         "changelogFile": "CHANGELOG.md"
       }
     ],
+    "@semantic-release/npm",
     [
       "@semantic-release/git",
       {
