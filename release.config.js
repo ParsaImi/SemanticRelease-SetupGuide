@@ -7,12 +7,6 @@ module.exports = {
     '@semantic-release/commit-analyzer',  // Analyzes commits for version bump
     '@semantic-release/release-notes-generator',  // Generates release notes
     [
-      '@semantic-release/changelog',
-      {
-        changelogFile: 'CHANGELOG.md',  // Output file for changelog
-      },
-    ],
-    [
       '@semantic-release/git',
       {
         assets: ['CHANGELOG.md', 'package.json'],  // Files to commit (e.g., updated version/changelog)
